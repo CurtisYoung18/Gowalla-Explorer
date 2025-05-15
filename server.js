@@ -63,6 +63,9 @@ app.use(cors(corsOptions));
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Serve static files from the root directory
+app.use(express.static(path.join(__dirname)));
+
 // API routes
 app.use('/api', apiRoutes);
 

@@ -23,7 +23,24 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--dark-color);
-    background-color: #f4f7fa;
+    background-image: url('/4k_3.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.85);
+    z-index: -1;
 }
 
 a {
@@ -40,15 +57,18 @@ a {
 
 /* Header & Footer */
 header, footer {
-    background-color: var(--primary-color);
+    background-color: rgba(74, 111, 165, 0.9);
     color: white;
     text-align: center;
     padding: 20px;
+    position: relative;
+    z-index: 1;
 }
 
 header h1 {
     margin-bottom: 10px;
     font-size: 2.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 footer {
@@ -60,6 +80,8 @@ footer {
 /* Main Content */
 main {
     padding: 30px 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .features-container {
@@ -71,17 +93,20 @@ main {
 }
 
 .feature-card {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
     box-shadow: var(--box-shadow);
     padding: 25px;
     transition: var(--transition);
     text-align: center;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .feature-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.95);
 }
 
 .feature-card h2 {
@@ -131,11 +156,13 @@ main {
 
 /* Forms */
 form {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 25px;
     border-radius: 8px;
     box-shadow: var(--box-shadow);
     margin-bottom: 30px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .form-group {
@@ -188,11 +215,13 @@ input:focus, select:focus, textarea:focus {
 
 /* Results section */
 .results-container {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
     box-shadow: var(--box-shadow);
     padding: 20px;
     margin-top: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .results-table {
@@ -296,10 +325,12 @@ input:focus, select:focus, textarea:focus {
 .chat-container {
     max-width: 800px;
     margin: 0 auto;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
     box-shadow: var(--box-shadow);
     overflow: hidden;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .chat-messages {
@@ -359,11 +390,13 @@ input:focus, select:focus, textarea:focus {
 
 /* Additional components */
 .card {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
     box-shadow: var(--box-shadow);
     padding: 20px;
     margin-bottom: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .card-header {
