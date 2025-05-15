@@ -24,14 +24,14 @@
         <div class="alert alert-danger" id="error-message"></div>
         
         <div class="sample-questions-container">
-            <div class="sample-question-bubble">What is the Gowalla dataset?</div>
-            <div class="sample-question-bubble">How many check-ins are in the database?</div>
-            <div class="sample-question-bubble">Which user has the most check-ins?</div>
-            <div class="sample-question-bubble">What are the most popular locations?</div>
-            <div class="sample-question-bubble">How can I export search results?</div>
-            <div class="sample-question-bubble">Tell me about trajectory search</div>
-            <div class="sample-question-bubble">How do I find popular POIs?</div>
-            <div class="sample-question-bubble">What cities have the most check-ins?</div>
+            <div class="sample-question-bubble" data-fallback="Gowalla was a location-based social network launched in 2009. Users could 'check in' at various locations using their mobile devices. The Gowalla dataset contains check-in data from the service before it shut down in 2012.">What is the Gowalla dataset?</div>
+            <div class="sample-question-bubble" data-fallback="Based on the dataset information, Gowalla contains over 6 million check-ins from more than 100,000 users at approximately 1 million locations worldwide.">How many check-ins are in the database?</div>
+            <div class="sample-question-bubble" data-fallback="The users with the most check-ins had thousands of check-ins across multiple countries. You can see detailed user statistics using the search functionality.">Which user has the most check-ins?</div>
+            <div class="sample-question-bubble" data-fallback="The most popular locations vary by region, but major transportation hubs, tourist attractions, and university campuses tend to have the highest check-in counts.">What are the most popular locations?</div>
+            <div class="sample-question-bubble" data-fallback="You can export search results by clicking the 'Export Results' button that appears below any results table. This will download the data as a CSV file that you can open in Excel or other spreadsheet software.">How can I export search results?</div>
+            <div class="sample-question-bubble" data-fallback="The Trajectory Query feature lets you visualize a user's check-in history over time. Simply enter a user ID, select a date range, and specify a radius. The system will show the user's check-ins on the map, along with similar check-ins by other users in the specified radius.">Tell me about trajectory search</div>
+            <div class="sample-question-bubble" data-fallback="The Popular POIs feature helps you discover the most frequently visited locations in a specific area and time period. You can select a predefined region or draw a custom area on the map, specify a date range, and see the top locations ranked by check-in count.">How do I find popular POIs?</div>
+            <div class="sample-question-bubble" data-fallback="The cities with the most check-ins tend to be major metropolitan areas like New York, San Francisco, Austin, and Chicago in the US, as well as global cities like London, Tokyo, and Paris.">What cities have the most check-ins?</div>
         </div>
         
         <div class="chat-container">
@@ -47,7 +47,7 @@
             </div>
         </div>
         
-        <div class="card" style="margin-top: 30px;">
+        <!-- <div class="card" style="margin-top: 30px;">
             <div class="card-header">
                 <h3 class="card-title">About This Chatbot</h3>
             </div>
@@ -61,15 +61,29 @@
                 </ul>
                 <p>For the best experience, ask specific questions about the dataset or application features.</p>
             </div>
-        </div>
+        </div> -->
     </main>
-
-    <footer>
-        <p>&copy; 2023 Gowalla Explorer - INFS4205/7205 Project</p>
-    </footer>
 
     <script src="js/main.js"></script>
     <script>
+        // Helper functions for chat interactions
+        function addMessageToChat(message, sender) {
+            const chatMessages = document.getElementById('chat-messages');
+            if (!chatMessages) return;
+            
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${sender}-message`;
+            
+            const paragraph = document.createElement('p');
+            paragraph.textContent = message;
+            
+            messageElement.appendChild(paragraph);
+            chatMessages.appendChild(messageElement);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
         // Add typing animation functionality
         function showTypingAnimation() {
             const typingAnimation = document.createElement('div');
@@ -92,11 +106,54 @@
             
             sampleQuestionBubbles.forEach(bubble => {
                 bubble.addEventListener('click', function() {
-                    userInput.value = this.textContent;
-                    // 使用延时确保点击后再触发发送按钮，防止可能的竞态条件
-                    setTimeout(() => {
-                        document.getElementById('send-button').click();
-                    }, 10);
+                    // Get the question and fallback answer
+                    const question = this.textContent;
+                    const fallbackAnswer = this.getAttribute('data-fallback');
+                    userInput.value = question;
+                    
+                    // Add user message to chat
+                    addMessageToChat(question, 'user');
+                    
+                    // Clear input
+                    userInput.value = '';
+                    
+                    // Show typing animation
+                    const typingAnimation = showTypingAnimation();
+                    
+                    // Try to use the API, but have a fallback
+                    fetch('/api/chatbot', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message: question })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('API call failed');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Remove typing animation
+                        typingAnimation.remove();
+                        
+                        // Add bot response to chat
+                        if (data && data.reply) {
+                            addMessageToChat(data.reply, 'bot');
+                        } else {
+                            // Use fallback if API returned empty
+                            addMessageToChat(fallbackAnswer, 'bot');
+                        }
+                    })
+                    .catch(error => {
+                        // Remove typing animation
+                        typingAnimation.remove();
+                        
+                        console.error('Error with chatbot API:', error);
+                        // Use fallback response on error
+                        addMessageToChat(fallbackAnswer, 'bot');
+                    });
                 });
             });
 

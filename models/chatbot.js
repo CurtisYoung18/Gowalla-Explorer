@@ -6,7 +6,7 @@
 const db = require('../db');
 
 // OpenRouter API configuration
-const OPENROUTER_API_KEY = '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';
+const OPENROUTER_API_KEY = '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';
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 /**
@@ -33,6 +33,13 @@ async function processWithAI(message) {
 
         console.log(`Sending request to OpenRouter API URL: ${OPENROUTER_API_URL}`);
         console.log('Using API key: ' + OPENROUTER_API_KEY.substring(0, 10) + '...');
+        console.log('API key length:', OPENROUTER_API_KEY.length);
+        console.log('Request payload:', JSON.stringify(payload, null, 2));
+
+        // Verify the API key format
+        if (!OPENROUTER_API_KEY.startsWith('sk-or-v1-')) {
+            console.error('ERROR: API key does not have correct format! It should start with sk-or-v1-');
+        }
         
         const response = await fetch(OPENROUTER_API_URL, {
             method: 'POST',
@@ -40,7 +47,8 @@ async function processWithAI(message) {
                 'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
                 'Content-Type': 'application/json',
                 'HTTP-Referer': 'http://localhost:3000',
-                'X-Title': 'Gowalla Explorer'
+                'X-Title': 'Gowalla Explorer',
+                'Origin': 'http://localhost:3000'
             },
             body: JSON.stringify(payload)
         });
@@ -48,6 +56,15 @@ async function processWithAI(message) {
         if (!response.ok) {
             const errorText = await response.text();
             console.error(`OpenRouter API Error (${response.status}):`, errorText);
+            console.error('Full request details:');
+            console.error('URL:', OPENROUTER_API_URL);
+            console.error('API Key (first 10 chars):', OPENROUTER_API_KEY.substring(0, 10) + '...');
+            console.error('Headers:', {
+                'Authorization': `Bearer ${OPENROUTER_API_KEY.substring(0, 10)}...`,
+                'Content-Type': 'application/json',
+                'HTTP-Referer': 'http://localhost:3000',
+                'X-Title': 'Gowalla Explorer'
+            });
             
             let errorDetail = `API error code: ${response.status}`;
             try {
@@ -208,7 +225,13 @@ async function processRuleBasedResponse(message) {
  * @returns {Promise<string>} - Promise resolving to the chatbot's response
  */
 async function processMessage(message) {
-    // First try to process with AI
+    // Check if API key is valid before trying to use OpenRouter
+    if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === 'sk-or-v1-REPLACE_WITH_NEW_API_KEY' || OPENROUTER_API_KEY.includes('REPLACE_WITH_NEW_API_KEY')) {
+        console.log('API key not valid, using rule-based responses directly');
+        return processRuleBasedResponse(message);
+    }
+    
+    // If API key appears valid, try to process with AI
     try {
         return await processWithAI(message);
     } catch (error) {

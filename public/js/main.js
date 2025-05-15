@@ -28,7 +28,7 @@ const ENDPOINTS = {
 
 // Constants
 const DEFAULT_MAP_CENTER = [39.8283, -98.5795]; // Center of the US
-const DEFAULT_MAP_ZOOM = 4;
+const DEFAULT_MAP_ZOOM = 2;
 const MAP_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
@@ -610,7 +610,7 @@ function displayTrajectoryResults(data) {
     if (!bounds.isValid()) {
         map.setView(DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM);
     } else {
-        map.fitBounds(bounds, { padding: [50, 50] });
+        map.fitBounds(bounds, { padding: [50, 50], maxZoom: 12 });
     }
     
     // Update table
@@ -966,7 +966,7 @@ function displaySearchResults(data) {
     if (!bounds.isValid()) {
         searchMap.setView(DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM);
     } else {
-        searchMap.fitBounds(bounds, { padding: [50, 50] });
+        searchMap.fitBounds(bounds, { padding: [50, 50], maxZoom: 12 });
     }
     
     // Update table
@@ -1144,15 +1144,6 @@ function initChatbotPage() {
             }
         });
     }
-    
-    // Add event listeners to sample questions
-    const sampleQuestions = document.querySelectorAll('.sample-question');
-    sampleQuestions.forEach(btn => {
-        btn.addEventListener('click', () => {
-            userInput.value = btn.textContent;
-            handleChatbotMessage();
-        });
-    });
 }
 
 /**
@@ -1574,7 +1565,7 @@ function displayPopularResults(data) {
     if (!bounds.isValid()) {
         popularMap.setView(DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM);
     } else {
-        popularMap.fitBounds(bounds, { padding: [50, 50] });
+        popularMap.fitBounds(bounds, { padding: [50, 50], maxZoom: 12 });
     }
     
     // Update table
