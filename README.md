@@ -1,10 +1,12 @@
 # Gowalla Explorer
+![index](https://github.com/user-attachments/assets/94e6cfdd-b60d-4778-a2bc-0b3723810059)
 
 A full-stack web application for exploring the Gowalla location-based social network dataset. This project allows users to visualize check-in trajectories, perform personalized searches, and discover popular points of interest in the Gowalla dataset.
 
 ## Features
 
 ### 1. Trajectory Query
+![1](https://github.com/user-attachments/assets/9228d301-a862-4914-9b8c-2565312767d9)
 - Search a user's check-in trajectory within a specific time range
 - Visualize the trajectory on an interactive map
 - Find spatially similar check-ins from other users within a customizable radius
@@ -17,11 +19,13 @@ A full-stack web application for exploring the Gowalla location-based social net
 - Export results as CSV
 
 ### 3. AI Chatbot
+![2](https://github.com/user-attachments/assets/72abb376-0a09-44a7-8b49-e4c40839a5a4)
 - Ask questions about the Gowalla dataset
 - Get help with using the application
 - Explore features through conversational interface
 
 ### 4. Popular POIs
+![3](https://github.com/user-attachments/assets/0e484dd2-b28c-4c23-bfa1-7f80a8718e40)
 - Discover the most popular check-in locations within a region
 - Select predefined regions or draw custom areas on the map
 - View popularity rankings based on check-in count and unique users
