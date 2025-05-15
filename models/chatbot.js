@@ -16,6 +16,8 @@ const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
  */
 async function processWithAI(message) {
     try {
+        console.log('Starting AI processing with OpenRouter...');
+        
         const payload = {
             model: "anthropic/claude-3-haiku", // Using Claude 3 Haiku for fast responses
             messages: [
@@ -29,29 +31,60 @@ async function processWithAI(message) {
             max_tokens: 500
         };
 
+        console.log(`Sending request to OpenRouter API URL: ${OPENROUTER_API_URL}`);
+        console.log('Using API key: ' + OPENROUTER_API_KEY.substring(0, 10) + '...');
+        
         const response = await fetch(OPENROUTER_API_URL, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
                 'Content-Type': 'application/json',
-                'HTTP-Referer': 'http://localhost:3000', // Replace with your actual domain in production
+                'HTTP-Referer': 'http://localhost:3000',
                 'X-Title': 'Gowalla Explorer'
             },
             body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
-            console.error('OpenRouter API Error:', await response.text());
-            // Fallback to rule-based response if API fails
-            return processRuleBasedResponse(message);
+            const errorText = await response.text();
+            console.error(`OpenRouter API Error (${response.status}):`, errorText);
+            
+            let errorDetail = `API error code: ${response.status}`;
+            try {
+                // Try to parse error as JSON
+                const errorJson = JSON.parse(errorText);
+                errorDetail = errorJson.error?.message || errorJson.message || errorDetail;
+            } catch (e) {
+                // If not JSON, use text as is
+                errorDetail = errorText.substring(0, 100) + (errorText.length > 100 ? '...' : '');
+            }
+            
+            return `I apologize, but I'm unable to process your request through the AI service right now. Error: ${errorDetail}. I'll use my basic responses instead.\n\n` + 
+                   await processRuleBasedResponse(message);
         }
 
         const data = await response.json();
-        return data.choices[0]?.message?.content || 'Sorry, I couldn\'t generate a response at the moment.';
+        console.log('OpenRouter API response received:', data.choices ? 'Success' : 'No choices in response');
+        
+        if (!data.choices || data.choices.length === 0) {
+            console.error('No choices in OpenRouter response:', data);
+            return 'The AI service returned an empty response. I\'ll use my basic knowledge instead.\n\n' + 
+                   await processRuleBasedResponse(message);
+        }
+        
+        const content = data.choices[0]?.message?.content;
+        if (!content) {
+            console.error('No content in OpenRouter response choice:', data.choices[0]);
+            return 'The AI service returned a response without content. I\'ll use my basic knowledge instead.\n\n' + 
+                   await processRuleBasedResponse(message);
+        }
+        
+        return content;
     } catch (error) {
         console.error('Error using OpenRouter:', error);
-        // Fallback to rule-based response if API fails
-        return processRuleBasedResponse(message);
+        console.error('Error stack:', error.stack);
+        return `I encountered an error connecting to the AI service: ${error.message}. I'll use my basic responses instead.\n\n` + 
+               await processRuleBasedResponse(message);
     }
 }
 

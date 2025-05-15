@@ -68,7 +68,7 @@ header, footer {
     z-index: 1;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-bottom: var(--glass-border);
+    /* border-bottom: var(--glass-border); */
 }
 
 header h1 {
@@ -427,10 +427,22 @@ input:focus, select:focus, textarea:focus {
     display: inline-block;
     margin-bottom: 20px;
     color: var(--primary-color);
+    background-color: var(--glass-background);
+    padding: 10px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    font-weight: 500;
 }
 
 .back-link:hover {
-    text-decoration: underline;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
 /* Additional components */
