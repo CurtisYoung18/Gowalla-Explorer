@@ -11,6 +11,9 @@
     --info-color: #17a2b8;
     --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
+    --glass-background: rgba(255, 255, 255, 0.25);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
 * {
@@ -20,7 +23,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Quicksand', 'Comic Sans MS', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--dark-color);
     background-image: url('/4k_3.png');
@@ -39,7 +42,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.3);
     z-index: -1;
 }
 
@@ -57,12 +60,15 @@ a {
 
 /* Header & Footer */
 header, footer {
-    background-color: rgba(74, 111, 165, 0.9);
+    background-color: rgba(74, 111, 165, 0.7);
     color: white;
     text-align: center;
     padding: 20px;
     position: relative;
     z-index: 1;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: var(--glass-border);
 }
 
 header h1 {
@@ -86,55 +92,63 @@ main {
 
 .features-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 25px;
     margin: 20px auto;
     max-width: 1200px;
 }
 
 .feature-card {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    box-shadow: var(--box-shadow);
-    padding: 25px;
+    background-color: var(--glass-background);
+    border-radius: 15px;
+    box-shadow: var(--glass-shadow);
+    border: var(--glass-border);
+    padding: 30px;
     transition: var(--transition);
     text-align: center;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .feature-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 .feature-card h2 {
     color: var(--secondary-color);
     margin-bottom: 15px;
+    font-weight: 600;
 }
 
 .feature-card p {
-    margin-bottom: 20px;
-    color: #666;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 1.05rem;
 }
 
 /* Buttons */
 .btn {
     display: inline-block;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+    background-color: var(--glass-background);
+    color: var(--primary-color);
+    padding: 12px 25px;
+    border-radius: 30px;
     transition: var(--transition);
-    border: none;
+    border: var(--glass-border);
     cursor: pointer;
     font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--glass-shadow);
 }
 
 .btn:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-2px);
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .btn-success {
@@ -156,13 +170,14 @@ main {
 
 /* Forms */
 form {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: var(--box-shadow);
+    background-color: var(--glass-background);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--glass-shadow);
     margin-bottom: 30px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: var(--glass-border);
 }
 
 .form-group {
@@ -175,18 +190,25 @@ label {
     font-weight: 500;
 }
 
+/* Input and form elements */
 input, select, textarea {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 15px;
+    border: var(--glass-border);
+    border-radius: 10px;
     font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    font-family: 'Quicksand', sans-serif;
 }
 
 input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+    box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 /* Maps */
@@ -215,35 +237,44 @@ input:focus, select:focus, textarea:focus {
 
 /* Results section */
 .results-container {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    box-shadow: var(--box-shadow);
-    padding: 20px;
+    background-color: var(--glass-background);
+    border-radius: 15px;
+    box-shadow: var(--glass-shadow);
+    padding: 25px;
     margin-top: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: var(--glass-border);
+}
+
+/* Table styles */
+.results-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.results-table th, .results-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.results-table th {
+    background-color: rgba(74, 111, 165, 0.3);
+    font-weight: 600;
+    color: var(--dark-color);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 }
 
-.results-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-.results-table th, .results-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
-
-.results-table th {
-    background-color: #f5f7fa;
-    font-weight: 600;
-    color: var(--secondary-color);
-}
-
 .results-table tr:hover {
-    background-color: #f9f9f9;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 /* Loading states */
@@ -251,17 +282,19 @@ input:focus, select:focus, textarea:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 30px;
 }
 
 .loading::after {
     content: "";
-    width: 30px;
-    height: 30px;
-    border: 5px solid #f3f3f3;
+    width: 40px;
+    height: 40px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
     border-top: 5px solid var(--primary-color);
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 @keyframes spin {
@@ -272,21 +305,24 @@ input:focus, select:focus, textarea:focus {
 /* Error and success messages */
 .alert {
     padding: 15px;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-bottom: 20px;
     display: none;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: var(--glass-border);
 }
 
 .alert-danger {
-    background-color: #f8d7da;
+    background-color: rgba(220, 53, 69, 0.2);
     color: #721c24;
-    border: 1px solid #f5c6cb;
+    border: 1px solid rgba(220, 53, 69, 0.3);
 }
 
 .alert-success {
-    background-color: #d4edda;
+    background-color: rgba(40, 167, 69, 0.2);
     color: #155724;
-    border: 1px solid #c3e6cb;
+    border: 1px solid rgba(40, 167, 69, 0.3);
 }
 
 .alert-warning {
@@ -325,12 +361,13 @@ input:focus, select:focus, textarea:focus {
 .chat-container {
     max-width: 800px;
     margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    box-shadow: var(--box-shadow);
+    background-color: var(--glass-background);
+    border-radius: 15px;
+    box-shadow: var(--glass-shadow);
     overflow: hidden;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: var(--glass-border);
 }
 
 .chat-messages {
@@ -341,26 +378,34 @@ input:focus, select:focus, textarea:focus {
 
 .message {
     margin-bottom: 15px;
-    padding: 10px 15px;
-    border-radius: 5px;
+    padding: 15px;
+    border-radius: 15px;
     max-width: 80%;
+    border: var(--glass-border);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .user-message {
-    background-color: #e7f3fe;
-    color: #174ea6;
+    background-color: rgba(74, 111, 165, 0.3);
+    color: var(--dark-color);
     margin-left: auto;
+    border-bottom-right-radius: 5px;
 }
 
 .bot-message {
-    background-color: #f1f1f1;
-    color: #333;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: var(--dark-color);
+    border-bottom-left-radius: 5px;
 }
 
 .chat-input {
     display: flex;
     padding: 15px;
-    border-top: 1px solid #eee;
+    border-top: var(--glass-border);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .chat-input input {
@@ -390,13 +435,14 @@ input:focus, select:focus, textarea:focus {
 
 /* Additional components */
 .card {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    box-shadow: var(--box-shadow);
-    padding: 20px;
+    background-color: var(--glass-background);
+    border-radius: 15px;
+    box-shadow: var(--glass-shadow);
+    padding: 25px;
     margin-bottom: 20px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: var(--glass-border);
 }
 
 .card-header {
