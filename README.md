@@ -53,7 +53,7 @@ A full-stack web application for exploring the Gowalla location-based social net
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/gowalla-explorer.git
+   git clone https://github.com/CurtisYoung18/Gowalla-Explorer.git
    cd gowalla-explorer
    ```
 
