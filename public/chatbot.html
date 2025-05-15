@@ -23,6 +23,17 @@
 
         <div class="alert alert-danger" id="error-message"></div>
         
+        <div class="sample-questions-container">
+            <div class="sample-question-bubble">What is the Gowalla dataset?</div>
+            <div class="sample-question-bubble">How many check-ins are in the database?</div>
+            <div class="sample-question-bubble">Which user has the most check-ins?</div>
+            <div class="sample-question-bubble">What are the most popular locations?</div>
+            <div class="sample-question-bubble">How can I export search results?</div>
+            <div class="sample-question-bubble">Tell me about trajectory search</div>
+            <div class="sample-question-bubble">How do I find popular POIs?</div>
+            <div class="sample-question-bubble">What cities have the most check-ins?</div>
+        </div>
+        
         <div class="chat-container">
             <div class="chat-messages" id="chat-messages">
                 <div class="message bot-message">
@@ -38,16 +49,17 @@
         
         <div class="card" style="margin-top: 30px;">
             <div class="card-header">
-                <h3 class="card-title">Sample Questions</h3>
+                <h3 class="card-title">About This Chatbot</h3>
             </div>
             <div class="card-body">
+                <p>This AI assistant is powered by Claude 3 Haiku through OpenRouter. It can help you understand:</p>
                 <ul>
-                    <li><button class="sample-question btn-link">What is the Gowalla dataset?</button></li>
-                    <li><button class="sample-question btn-link">How many check-ins are in the database?</button></li>
-                    <li><button class="sample-question btn-link">Which user has the most check-ins?</button></li>
-                    <li><button class="sample-question btn-link">What are the most popular locations?</button></li>
-                    <li><button class="sample-question btn-link">How can I export search results?</button></li>
+                    <li>The Gowalla dataset and its characteristics</li>
+                    <li>How to use the different features of Gowalla Explorer</li>
+                    <li>Interpret search results and visualizations</li>
+                    <li>Export and analyze data from the application</li>
                 </ul>
+                <p>For the best experience, ask specific questions about the dataset or application features.</p>
             </div>
         </div>
     </main>
@@ -57,5 +69,91 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script>
+        // Add typing animation functionality
+        function showTypingAnimation() {
+            const typingAnimation = document.createElement('div');
+            typingAnimation.className = 'message bot-message typing-animation-container';
+            typingAnimation.innerHTML = `
+                <div class="typing-animation">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            document.getElementById('chat-messages').appendChild(typingAnimation);
+            return typingAnimation;
+        }
+
+        // Initialize sample question bubbles
+        document.addEventListener('DOMContentLoaded', function() {
+            const sampleQuestionBubbles = document.querySelectorAll('.sample-question-bubble');
+            const userInput = document.getElementById('user-input');
+            
+            sampleQuestionBubbles.forEach(bubble => {
+                bubble.addEventListener('click', function() {
+                    userInput.value = this.textContent;
+                    // 使用延时确保点击后再触发发送按钮，防止可能的竞态条件
+                    setTimeout(() => {
+                        document.getElementById('send-button').click();
+                    }, 10);
+                });
+            });
+
+            // 使用延时确保main.js已完全加载并初始化
+            setTimeout(() => {
+                // Override handleChatbotMessage to show typing animation
+                if (window.handleChatbotMessage) {
+                    const originalHandleChatbotMessage = window.handleChatbotMessage;
+                    window.handleChatbotMessage = async function() {
+                        const userInput = document.getElementById('user-input');
+                        const chatMessages = document.getElementById('chat-messages');
+                        
+                        if (!userInput || !chatMessages) return;
+                        
+                        const message = userInput.value.trim();
+                        
+                        if (!message) {
+                            showError('Please enter a message', 'error-message');
+                            return;
+                        }
+                        
+                        // Add user message to chat
+                        addMessageToChat(message, 'user');
+                        
+                        // Clear input
+                        userInput.value = '';
+                        
+                        // Show typing animation
+                        const typingAnimation = showTypingAnimation();
+                        
+                        try {
+                            // Call the API
+                            const response = await fetchAPI(ENDPOINTS.chatbot, {
+                                message
+                            });
+                            
+                            // Remove typing animation
+                            typingAnimation.remove();
+                            
+                            // Add bot response to chat
+                            if (response && response.reply) {
+                                addMessageToChat(response.reply, 'bot');
+                            } else {
+                                addMessageToChat('Sorry, I couldn\'t process your request. Please try again.', 'bot');
+                            }
+                        } catch (error) {
+                            // Remove typing animation
+                            typingAnimation.remove();
+                            addMessageToChat('An error occurred. Please try again later.', 'bot');
+                        }
+                    };
+                    console.log('Successfully overrode handleChatbotMessage function');
+                } else {
+                    console.warn('handleChatbotMessage function not found in window object');
+                }
+            }, 300); // 给予足够的时间让main.js加载完成
+        });
+    </script>
 </body>
 </html> 

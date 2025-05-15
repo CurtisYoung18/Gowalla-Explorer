@@ -6,7 +6,7 @@
 const db = require('../db');
 
 // OpenRouter API configuration
-const OPENROUTER_API_KEY = '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';
+const OPENROUTER_API_KEY = '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';
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 /**

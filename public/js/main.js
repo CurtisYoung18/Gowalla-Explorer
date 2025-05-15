@@ -1194,6 +1194,9 @@ async function handleChatbotMessage() {
     }
 }
 
+// Expose handleChatbotMessage to window object so it can be overridden
+window.handleChatbotMessage = handleChatbotMessage;
+
 /**
  * Adds a message to the chat interface
  * @param {string} message - The message text
