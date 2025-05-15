@@ -1,0 +1,124 @@
+# Gowalla Explorer - Project Report
+INFS4205/7205 Advanced Techniques for High Dimensional Data
+Semester 1, 2025
+
+## Introduction
+
+In today's data-driven world, the analysis of location-based social networks (LBSNs) provides valuable insights into human mobility patterns, social interactions, and spatial preferences. The Gowalla dataset, containing over 6 million check-ins from more than 100,000 users across approximately 1 million locations worldwide, represents a rich source of high-dimensional data combining spatial coordinates, temporal information, and social relationships.
+
+This project addresses the challenge of efficiently querying, analyzing, and visualizing this complex high-dimensional dataset through a web-based interface called "Gowalla Explorer." The application enables users to explore user trajectories, perform personalized searches, identify popular points of interest, and interact with the data through an AI-powered chatbot.
+
+The practical application value of this project extends to several domains:
+1. Urban planning and development, by identifying popular locations and movement patterns
+2. Business intelligence for location-based marketing and site selection
+3. Tourism research for understanding visitor behavior and preferences
+4. Transportation planning based on human mobility patterns
+5. Social network analysis exploring the spatial dimension of social connections
+
+High-dimensional data queries are necessary for this application because the Gowalla dataset combines multiple dimensions (spatial coordinates, time, user relationships) that must be analyzed together to extract meaningful patterns and insights.
+
+## Methodology
+
+### System Architecture
+
+The Gowalla Explorer application follows a classic three-tier architecture:
+
+1. **Frontend**: Built with HTML, CSS, and JavaScript, providing an intuitive user interface with interactive maps (using Leaflet.js), data tables, and visualization components. The frontend communicates with the backend through RESTful API calls.
+
+2. **Backend**: Implemented using Node.js with Express.js, following MVC design patterns. The backend handles API request validation, query construction, database interaction, and response formatting.
+
+3. **Database**: PostgreSQL with PostGIS extension stores the Gowalla dataset and enables efficient spatial queries. The database schema is optimized for the specific query tasks with appropriate indices.
+
+### Query Implementation
+
+The application implements three primary query tasks, each addressing different analytical needs:
+
+1. **Trajectory Query**: This function reconstructs a user's movement patterns by retrieving their check-ins ordered by timestamp within a specified date range. It also finds similar check-ins from other users within a configurable radius, enabling the discovery of shared spatial behaviors.
+
+   Implementation approach:
+   - Initial spatial query to retrieve user check-ins within the date range
+   - Secondary spatial query with PostGIS ST_Distance_Sphere to find nearby check-ins from other users
+   - Query optimization using B-tree indices on user_id and GiST indices on geospatial coordinates
+
+2. **Personalized Search**: This function enables flexible searches by user ID, location ID, or both, with sorting options by time or distance. It supports data exploration from either a user-centric or location-centric perspective.
+
+   Implementation approach:
+   - Conditional query construction based on search parameters
+   - Efficient retrieval using B-tree indices on user_id and location_id
+   - Order by clauses optimized with appropriate indices
+
+3. **Popular POIs**: This function identifies the most frequently visited locations within a geographical area and time period. Users can select predefined regions or draw custom areas on the map to focus their analysis.
+
+   Implementation approach:
+   - Spatial bounding box query using PostGIS ST_MakeEnvelope
+   - Aggregation of check-ins by location with count and distinct user counts
+   - Ordering by popularity metrics with tunable result limits
+
+### Integration of Multi-dimensional Aspects
+
+The application integrates multiple data dimensions throughout its implementation:
+
+- **Spatial dimension**: Utilized through PostGIS functions for distance calculations, bounding box queries, and spatial visualization
+- **Temporal dimension**: Incorporated through date range filtering and timestamp ordering
+- **Social dimension**: Leveraged by connecting user check-ins with similar behavior from other users
+- **Attribute dimension**: Applied through various filtering and aggregation operations on location and user attributes
+
+The AI chatbot component further enhances the multi-dimensional interaction by allowing natural language queries against the database, making complex multi-dimensional data more accessible.
+
+## Results & Analysis
+
+### UI Design
+
+The user interface follows a glass morphism design pattern with semi-transparent elements, blurred backgrounds, and rounded corners. This modern aesthetic creates a visually appealing experience while maintaining functionality. Key UI components include:
+
+1. **Interactive maps**: Central to the visualization of spatial data, allowing users to view check-ins, trajectories, and popular locations with custom markers and popups displaying detailed information.
+
+2. **Search forms**: Intuitive input forms with validation for each query type, incorporating user-friendly elements like date pickers, autocomplete suggestions, and range selectors.
+
+3. **Results display**: Dual representation of query results through both map visualization and sortable data tables, with export functionality for further analysis.
+
+4. **Chatbot interface**: Conversational UI with sample question bubbles and typing animations, providing an alternative mode of interaction for users who prefer natural language queries.
+
+The UI successfully balances ease of use with analytical power, making complex data queries accessible to users without requiring technical database knowledge.
+
+### Implemented Queries
+
+Each query addresses specific real-world needs:
+
+1. **Trajectory Query**: This query enables understanding of individual mobility patterns, valuable for analyzing routine behaviors, tourism routes, or changes in spatial preferences over time. The addition of similar check-ins from other users provides insight into shared behaviors or popular transitions between locations.
+
+2. **Personalized Search**: By allowing flexible searching by user or location, this query supports both user-centric analysis (following individuals across locations) and location-centric analysis (examining who visits specific places). The ability to sort by time or distance further enhances analytical capabilities.
+
+3. **Popular POIs**: This regional popularity analysis supports business intelligence, urban planning, and tourism management by identifying hotspots within custom geographical areas. The distinction between total check-ins and unique users provides nuance in understanding popularity versus repeat visitation.
+
+### Challenges and Solutions
+
+Several technical challenges were encountered during implementation:
+
+1. **Database Performance**: With over 6 million records, query performance was initially problematic. This was addressed through:
+   - Strategic indexing on frequently queried columns
+   - Query optimization to minimize expensive operations
+   - Implementation of result limiting to prevent overloading
+
+2. **Spatial Visualization**: Displaying large numbers of markers on maps caused performance issues. Solutions included:
+   - Clustering markers for dense regions
+   - Progressive loading of map data
+   - Limiting the maximum zoom level to prevent excessive detail
+
+3. **API Integration**: The OpenRouter API for the AI chatbot component presented authentication challenges. These were addressed by:
+   - Implementing detailed error logging
+   - Creating fallback responses for sample questions
+   - Developing a client-side handling system that gracefully manages API failures
+
+## Writing
+
+The Gowalla Explorer project demonstrates the effective application of high-dimensional data techniques to a real-world dataset. By combining spatial, temporal, and social dimensions in an interactive web application, it provides valuable insights that would be difficult to extract through traditional means.
+
+The implementation of three distinct query tasks—trajectory analysis, personalized search, and popularity ranking—showcases different approaches to multi-dimensional data exploration. Each query addresses specific analytical needs while maintaining good performance even with millions of records.
+
+The project highlights the value of proper database design, query optimization, and thoughtful UI development in creating practical tools for high-dimensional data analysis. Future work could explore additional dimensions such as semantic content analysis of check-ins or temporal pattern mining across seasons and years.
+
+References:
+[1] Cho, E., Myers, S. A., & Leskovec, J. (2011). Friendship and mobility: User movement in location-based social networks. Proceedings of the 17th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, 1082-1090.
+[2] PostgreSQL Documentation. (2023). PostGIS Spatial and Geographic Objects. https://www.postgresql.org/docs/current/postgis.html
+[3] Leaflet.js Documentation. (2023). An open-source JavaScript library for mobile-friendly interactive maps. https://leafletjs.com/ 

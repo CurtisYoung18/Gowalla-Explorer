@@ -1,0 +1,42 @@
+# Gowalla Explorer - 3-Minute Presentation Script
+INFS4205/7205 Advanced Techniques for High Dimensional Data
+Semester 1, 2025
+
+## Introduction (30 seconds)
+
+[Show student ID]
+
+Hello, my name is [Your Name], and today I'll be reflecting on my experience developing the Gowalla Explorer application. This project involved creating a web-based system to analyze and visualize high-dimensional location-based social network data from the Gowalla dataset, which contains over 6 million check-ins across the globe.
+
+## Development Journey (1 minute)
+
+My journey on this project began with database design and setting up PostgreSQL with PostGIS for spatial queries. The coursework on spatial databases was invaluable here, particularly the optimization techniques for high-dimensional data that we covered in Weeks 4 and 5.
+
+The most challenging aspect was designing queries that could efficiently process millions of records while still providing meaningful insights. I learned that proper indexing strategies are critical - creating GiST indices for spatial data and B-tree indices for user and location IDs dramatically improved performance.
+
+One significant hurdle was balancing frontend visualization with backend performance. When I initially displayed all check-ins on the map, the browser would freeze. This pushed me to implement more sophisticated data loading and visualization techniques, including clustering markers and limiting result sets.
+
+## Learning Outcomes (1 minute)
+
+This project significantly deepened my understanding of high-dimensional data analysis. I gained practical experience with:
+
+1. Spatial database design and query optimization
+2. Integrating multiple data dimensions (spatial, temporal, social) in a single application
+3. Building interactive visualizations for complex data
+4. Developing a full-stack application with Node.js, Express, and PostgreSQL
+
+The most valuable skill I developed was the ability to translate theoretical database concepts into practical, user-facing features. For example, applying spatial joins and aggregation techniques we learned in class to create the Popular POIs feature was particularly rewarding.
+
+The coursework on query optimization was essential when dealing with the large Gowalla dataset. Without the knowledge gained from Weeks 6-8 on high-dimensional indexing structures, my queries would have been significantly slower.
+
+## Reflection and Future Improvements (30 seconds)
+
+If I were to continue this project, I would focus on three improvements:
+
+1. Implementing more advanced spatial analysis, such as trajectory clustering and movement pattern detection
+2. Adding predictive features using machine learning to suggest locations
+3. Enhancing the LLM-based chatbot with more specialized knowledge of spatial data concepts
+
+This project taught me that high-dimensional data analysis is more than just technical implementation—it's about making complex data accessible and meaningful through thoughtful UI design and query construction.
+
+Thank you for your attention. I'm happy to answer any questions about my development process or the challenges I faced during this project. 
