@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Search - Gowalla Explorer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+    <header>
+        <h1>Gowalla Explorer</h1>
+        <p>Explore location-based social network data</p>
+    </header>
+
+    <main class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <h2 class="page-heading">Personalized Search</h2>
+        <p class="text-center">Search check-ins by user ID, location ID, and more</p>
+
+        <div class="alert alert-danger" id="error-message"></div>
+        <div class="alert alert-success" id="success-message"></div>
+        
+        <form id="search-form">
+            <div class="form-group">
+                <label for="search-user-id">User ID <span class="tooltip">ℹ️
+                    <span class="tooltip-text">Enter a user ID to find their check-ins (optional)</span>
+                </span></label>
+                <input type="number" id="search-user-id" name="userId" placeholder="Enter user ID (e.g., 12345)" min="1">
+                <div id="user-id-suggestions" class="suggestions"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="search-location-id">Location ID <span class="tooltip">ℹ️
+                    <span class="tooltip-text">Enter a location ID to find check-ins at this location (optional)</span>
+                </span></label>
+                <input type="number" id="search-location-id" name="locationId" placeholder="Enter location ID (e.g., 5678)" min="1">
+                <div id="location-id-suggestions" class="suggestions"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="sort-by">Sort By <span class="tooltip">ℹ️
+                    <span class="tooltip-text">Choose how to sort the search results</span>
+                </span></label>
+                <select id="sort-by" name="sortBy">
+                    <option value="time">Time (newest first)</option>
+                    <option value="time-asc">Time (oldest first)</option>
+                    <option value="distance">Distance (nearest first)</option>
+                    <option value="distance-desc">Distance (farthest first)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="limit">Maximum Results <span class="tooltip">ℹ️
+                    <span class="tooltip-text">Limit the number of results (10-1000)</span>
+                </span></label>
+                <input type="number" id="limit" name="limit" value="100" min="10" max="1000" step="10">
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn">Search Check-ins</button>
+                <button type="button" id="load-sample-search" class="btn btn-info">Load Sample Data</button>
+                <button type="reset" class="btn btn-warning">Reset</button>
+            </div>
+        </form>
+        
+        <div id="loading" class="loading" style="display: none;"></div>
+        
+        <div id="results-section" style="display: none;">
+            <div class="map-debug" style="background-color: #f1f1f1; padding: 5px; margin-bottom: 5px; display: none;">
+                <p id="map-debug-info">Map container dimensions: <span id="search-map-width">0</span> x <span id="search-map-height">0</span></p>
+            </div>
+            <div class="map-container" id="search-map" style="height: 500px !important; width: 100%; display: block;"></div>
+            
+            <div class="results-container">
+                <h3>Search Results</h3>
+                <p id="search-summary"></p>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Check-in Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="results-table" id="search-table">
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Location ID</th>
+                                    <th>Latitude</th>
+                                    <th>Longitude</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Results will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <button id="export-search-results" class="btn export-btn">Export Results</button>
+            </div>
+        </div>
+        
+        <div id="no-results" class="card" style="display: none;">
+            <div class="card-body">
+                <p>No check-ins found for the specified criteria. Please try different parameters.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Gowalla Explorer - INFS4205/7205 Project</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

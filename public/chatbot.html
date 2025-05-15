@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot - Gowalla Explorer</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Gowalla Explorer</h1>
+        <p>Explore location-based social network data</p>
+    </header>
+
+    <main class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <h2 class="page-heading">AI Chatbot</h2>
+        <p class="text-center">Ask questions about the Gowalla dataset and get intelligent answers</p>
+
+        <div class="alert alert-danger" id="error-message"></div>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot-message">
+                    <p>Hello! I'm the Gowalla Explorer Assistant. You can ask me questions about the Gowalla dataset, location-based social networks, or how to use this application. How can I help you today?</p>
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" id="user-input" placeholder="Type your question here..." aria-label="Type your question">
+                <button id="send-button" class="btn">Send</button>
+            </div>
+        </div>
+        
+        <div class="card" style="margin-top: 30px;">
+            <div class="card-header">
+                <h3 class="card-title">Sample Questions</h3>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><button class="sample-question btn-link">What is the Gowalla dataset?</button></li>
+                    <li><button class="sample-question btn-link">How many check-ins are in the database?</button></li>
+                    <li><button class="sample-question btn-link">Which user has the most check-ins?</button></li>
+                    <li><button class="sample-question btn-link">What are the most popular locations?</button></li>
+                    <li><button class="sample-question btn-link">How can I export search results?</button></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Gowalla Explorer - INFS4205/7205 Project</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 
